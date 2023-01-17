@@ -13,7 +13,7 @@ static inline void putchar(char c) {
 }
 
 static inline char getchar() {
-    msyscall(SYSCALL_GETCHAR, 0, 0, 0, 0, 0, 0);
+    return msyscall(SYSCALL_GETCHAR, 0, 0, 0, 0, 0, 0);
 }
 
 static inline void putString(char* buffer, u_longlong len) {

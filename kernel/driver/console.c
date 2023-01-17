@@ -43,7 +43,6 @@ inline int _getchar(void)
     }
     if ((ret & UART_RXFIFO_DATA) == '\r')
         return '\n';
-    printf("%c", ret & UART_RXFIFO_DATA);
     return ret & UART_RXFIFO_DATA;
 }
 
