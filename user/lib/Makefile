@@ -1,6 +1,6 @@
 INCLUDES := -I../../include -I../include
 
-target = fsipc.o ide.o ipc.o printf.o uLib.o uMain.o uStart.o file.o console.o pipe.o fd.o fs.o
+target = fsipc.o ipc.o printf.o uLib.o uMain.o uStart.o file.o console.o pipe.o fd.o file.o debugf.o
 
 .PHONY: build clean
 

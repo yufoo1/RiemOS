@@ -3,11 +3,11 @@
  */
 
 #include "../include/syscallLib.h"
-#include "../include/ide.h"
 #include "../../include/sd.h"
 #include "../../include/process.h"
 #include "../include/printf.h"
 #include "../../include/riscv.h"
+#include "server.h"
 
 void ide_write(void *src, u_int secno, u_int nsecs)
 {

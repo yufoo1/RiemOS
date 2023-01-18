@@ -1,11 +1,7 @@
-#include <memory.h>
-#include "../../include/memory.h"
 #include "../include/printf.h"
 #include "../include/ipc.h"
 #include "../include/fsipc.h"
 #include "../../include/error.h"
-#include "../include/file.h"
-#include "../include/fsipc.h"
 
 extern u_char fsipcbuf[PAGE_SIZE];		// page-aligned, declared in entry.S
 u_longlong fileSystemPid = 0x800;

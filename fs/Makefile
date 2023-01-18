@@ -1,24 +1,24 @@
-INCLUDES	:=	-I../include/ -I../../include
+INCLUDES	:=	-I../include/ -I../user/include
 
-BIN_TOC		:= ../../tool/BinaryToC.c
+BIN_TOC		:= ../tool/BinaryToC.c
 
-user_lib_dir := ../lib
+user_lib_dir := ../user/lib
 
 USER_LIB	:= 	$(user_lib_dir)/uMain.o \
+				$(user_lib_dir)/uStart.o \
 				$(user_lib_dir)/printf.o \
 				$(user_lib_dir)/uLib.o \
 				$(user_lib_dir)/file.o \
 				$(user_lib_dir)/console.o \
 				$(user_lib_dir)/pipe.o \
 				$(user_lib_dir)/fd.o \
-				$(user_lib_dir)/fs.o \
 				$(user_lib_dir)/ipc.o \
-				$(user_lib_dir)/ide.o \
 				$(user_lib_dir)/fsipc.o \
+				$(user_lib_dir)/debugf.o \
+				fs.o \
+				ide.o \
 
-MOUNT_DIR	:= ./mnt
-
-USER_TARGET := fsProcess.x
+USER_TARGET := server.x
 
 .PHONY: bintoc build clean
 
@@ -35,7 +35,7 @@ build: bintoc $(USER_LIB) $(USER_TARGET)
 	mv $@ $(MOUNT_DIR)
 
 %.b: $(user_lib_dir)/uStart.o %.o $(USER_LIB)
-	$(LD) -o $@ $(LDFLAGS) -G 0 -static -n -nostdlib -T ../../linkscript/User.ld $^
+	$(LD) -o $@ $(LDFLAGS) -G 0 -static -n -nostdlib -T ../linkscript/User.ld $^
 	$(OBJDUMP) -D $@ > $@.txt
 
 %.o: %.c
@@ -49,11 +49,11 @@ clean:
 		do \
 			$(MAKE) --directory=$$d clean; \
 		done
-	rm -rf *.o *~ *.d *.x *.b.txt $(MOUNT_DIR)/* BinaryToC *.b
+	rm -rf *.o *~ *.d *.x *.b.txt BinaryToC *.b
 
 bintoc:
 	gcc $(BIN_TOC) -o BinaryToC
 	chmod +x BinaryToC
 
 
-include ../../include.mk
+include ../include.mk

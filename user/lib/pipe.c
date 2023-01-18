@@ -1,6 +1,7 @@
 #include "../../include/process.h"
 #include "../include/syscallLib.h"
 #include "../include/fd.h"
+#include "../include/uLib.h"
 
 #define debug 0
 
@@ -94,10 +95,6 @@ _pipeisclosed(struct Fd *fd, struct Pipe *p)
 
 	if (pfd == pfp)
 		return 1;	
-
-
-
-//	user_panic("_pipeisclosed not implemented");
 	return 0;
 }
 
@@ -174,23 +171,13 @@ pipewrite(struct Fd *fd, const void *vbuf, u_int n, u_int offset)
 		p->p_buf[p->p_wpos % BY2PIPE] = wbuf[i];
 		p->p_wpos++;
 	}
-	
-
-//	return -E_INVAL;
-	
-	
-//	user_panic("pipewrite not implemented");
-
 	return n;
 }
 
 static int
 pipestat(struct Fd *fd, struct Stat *stat)
 {
-	struct Pipe *p;
-
-	
-
+	return 0;
 }
 
 static int

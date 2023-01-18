@@ -2,7 +2,6 @@
 #include "../../include/riscv.h"
 #include "../../include/error.h"
 #include "../../include/mmio.h"
-#include "../../include/string.h"
 
 
 extern PageList freePages;

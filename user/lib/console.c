@@ -1,7 +1,7 @@
 #include "../include/fd.h"
 #include "../include/syscallLib.h"
 #include "../include/uLib.h"
-#include "../include/printf.h"
+#include "../include/debugf.h"
 
 static int cons_read(struct Fd*, void*, u_int, u_int);
 static int cons_write(struct Fd*, const void*, u_int, u_int);
@@ -50,7 +50,7 @@ cons_read(struct Fd *fd, void *vbuf, u_int n, u_int offset)
 	int c;
 
 	USED(offset);
-//	printf("got into cons_read");
+	debugf("got into cons_read");
 	if (n == 0)
 		return 0;
 
@@ -58,9 +58,9 @@ cons_read(struct Fd *fd, void *vbuf, u_int n, u_int offset)
 		schedYield();
 
 	if (c!='\r') 
-		printf("%c",c);
+		debugf("%c",c);
 	else
-		printf("\n");
+		debugf("\n");
 	if (c < 0)
 		return c;
 	if (c == 0x04)	// ctl-d is eof
@@ -83,9 +83,9 @@ cons_write(struct Fd *fd, const void *vbuf, u_int n, u_int offset)
 		m = n - tot;
 		if (m > sizeof buf-1)
 			m = sizeof buf-1;
-		user_bcopy((char*)vbuf+tot, buf, m);
+		memcpy((char*)vbuf+tot, buf, m);
 		buf[m] = 0;
-		printf("%s",buf);
+		debugf("%s",buf);
 	}
 	return tot;
 }

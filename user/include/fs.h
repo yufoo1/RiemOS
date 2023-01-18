@@ -55,12 +55,6 @@ struct Super {
 	struct File s_root;	// Root directory node
 };
 
-/* IDE disk number to look on for our file system */
-#define DISKNO		1
-
-#define BY2SECT		512	/* Bytes per disk sector */
-#define SECT2BLK	(BY2BLK/BY2SECT)	/* sectors to a block */
-
 /* Disk block n, when in memory, is mapped into the file system
  * server's address space at DISKMAP+(n*BY2BLK). */
 #define DISKMAP		0x10000000
@@ -68,15 +62,10 @@ struct Super {
 /* Maximum disk size we can handle (1GB) */
 #define DISKMAX		0x40000000
 
-#define PTE_V (1ll << 0)
-#define PTE_R (1ll << 1)
-#define PTE_W (1ll << 2)
-#define PTE_X (1ll << 3)
-#define PTE_U (1ll << 4)
-#define PTE_G (1ll << 5)
-#define PTE_A (1ll << 6)
-#define PTE_D (1 << 7)
-#define PTE_C (1ll << 8)
-
+void fs_init(void);
+void fs_sync(void);
+extern u_int *bitmap;
+int map_block(u_int);
+int alloc_block(void);
 
 #endif // _FS_H_

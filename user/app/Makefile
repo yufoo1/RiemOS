@@ -6,11 +6,11 @@ user_lib_dir := ../lib
 
 kernel_driver_lib_dir := ../../kernel/driver
 
-USER_LIB	:= $(user_lib_dir)/uMain.o $(user_lib_dir)/printf.o $(user_lib_dir)/uLib.o $(user_lib_dir)/ide.o $(user_lib_dir)/ipc.o
+USER_LIB	:= $(user_lib_dir)/uMain.o $(user_lib_dir)/printf.o $(user_lib_dir)/uLib.o $(user_lib_dir)/ipc.o $(user_lib_dir)/debugf.o $(user_lib_dir)/fd.o $(user_lib_dir)/fsipc.o $(user_lib_dir)/uStart.o $(user_lib_dir)/file.o $(user_lib_dir)/console.o $(user_lib_dir)/pipe.o $(user_lib_dir)/debugf.o
 
 MOUNT_DIR	:= ./mnt
 
-USER_TARGET := ProcessA.x ProcessB.x forkTest.x ipcTest.x ideTest.x
+USER_TARGET := ProcessA.x ProcessB.x forkTest.x ipcTest.x ideTest.x fsTest.x
 
 .PHONY: bintoc build clean
 

@@ -2,6 +2,7 @@
 #include "../../include/error.h"
 #include "../include/printf.h"
 #include "../include/file.h"
+#include "../include/uLib.h"
 
 int
 dev_lookup(int dev_id, struct Dev **dev)
@@ -73,10 +74,10 @@ fd_lookup(int fdnum, struct Fd **fd)
 
 	va = INDEX2FD(fdnum);
 
-//	if (((* vpt)[va / PGSIZE] & PTE_V) != 0) {	//the fd is used
-//		*fd = (struct Fd *)va;
-//		return 0;
-//	}
+	// if (((* vpt)[va / PGSIZE] & PTE_V) != 0) {	//the fd is used TODO
+	// 	*fd = (struct Fd *)va;
+	// 	return 0;
+	// }
     if (checkVaIsMap(va)) {
         *fd = (struct Fd *)va;
         return 0;
@@ -146,7 +147,7 @@ dup(int oldfdnum, int newfdnum)
 	ova = fd2data(oldfd);
 	nva = fd2data(newfd);
 
-//	if ((* vpd)[PDX(ova)]) {
+//	if ((* vpd)[PDX(ova)]) { TODO
 //		for (i = 0; i < PDMAP; i += PGSIZE) {
 //			pte = (* vpt)[VPN(ova + i)];
 //
@@ -304,7 +305,7 @@ stat(const char *path, struct Stat *stat)
 {
 	int fd, r;
 
-	if ((fd = file_open(path, O_RDONLY)) < 0) { // 未核实修改，可能发生bug
+	if ((fd = open(path, O_RDONLY)) < 0) {
 		return fd;
 	}
 

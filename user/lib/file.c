@@ -5,6 +5,7 @@
 #include "../include/file.h"
 #include "../include/fsipc.h"
 #include "../../include/error.h"
+#include "../include/debugf.h"
 
 #define debug 0
 
@@ -83,7 +84,7 @@ open(const char *path, int mode)
 
 // Overview:
 //	Close a file descriptor
-static int file_close(struct Fd *fd)
+int file_close(struct Fd *fd)
 {
 	int r;
 	struct Filefd *ffd;
@@ -143,7 +144,7 @@ file_read(struct Fd *fd, void *buf, u_int n, u_int offset)
 		n = size - offset;
 	}
 
-	user_bcopy((char *)fd2data(fd) + offset, buf, n);
+	memcpy((char *)fd2data(fd) + offset, buf, n);
 	return n;
 }
 
@@ -223,9 +224,7 @@ ftruncate(int fdnum, u_int size)
     // Unmap pages if truncating the file
     for (i = UP_ALIGN(size, PGSIZE); i < UP_ALIGN(oldsize, PGSIZE); i += PGSIZE)
         if ((r = unmapMemoryFrom(0, va + i)) < 0) {
-            printf("ftruncate: syscall_mem_unmap %08x: %e", va + i, r);
-            while(1);
-//            uPanic("ftruncate: syscall_mem_unmap %08x: %e", va + i, r);
+            user_panic("ftruncate: syscall_mem_unmap %08x: %e", va + i, r);
         }
 
     return 0;
@@ -258,7 +257,7 @@ file_write(struct Fd *fd, const void *buf, u_int n, u_int offset)
 	}
 
 	// Write the data
-	user_bcopy(buf, (char *)fd2data(fd) + offset, n);
+	memcpy(buf, (char *)fd2data(fd) + offset, n);
 	return n;
 }
 

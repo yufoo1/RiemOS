@@ -7,16 +7,6 @@
 
 #define NDEV 4
 #define NFILE 64 //Number of fd that all process can open
-typedef struct file {
-    enum { FD_NONE, FD_PIPE, FD_ENTRY, FD_DEVICE } type;
-    int ref;  // reference count
-    char readable;
-    char writable;
-    struct pipe* pipe;  // FD_PIPE
-    struct dirent* ep;
-    u_int off;     // FD_ENTRY
-    short major;  // FD_DEVICE
-} file;
 
 #define major(dev) ((dev) >> 16 & 0xFFFF)
 #define minor(dev) ((dev)&0xFFFF)
@@ -41,6 +31,12 @@ int file_set_size(struct File *f, u_int newsize);
 int file_remove(char *path);
 int file_dirty(struct File *f, u_int offset);
 void file_flush(struct File *);
+
+int	open(const char *path, int mode);
+int	read_map(int fd, u_int offset, void **blk);
+int	remove(const char *path);
+int	ftruncate(int fd, u_int size);
+int	sync(void);
 
 void fs_init(void);
 void fs_sync(void);

@@ -1,11 +1,10 @@
-#include <process.h>
-#include <memory.h>
-#include <error.h>
-#include <elf.h>
-#include <riscv.h>
-#include <trap.h>
-#include <string.h>
-#include "mmio.h"
+#include "../../include/process.h"
+#include "../../include/memory.h"
+#include "../../include/error.h"
+#include "../../include/elf.h"
+#include "../../include/riscv.h"
+#include "../../include/trap.h"
+#include "../../include/mmio.h"
 
 static struct ProcessList freeProcesses;
 struct ProcessList scheduleList;

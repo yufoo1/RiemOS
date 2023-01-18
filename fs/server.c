@@ -3,14 +3,12 @@
  * serves IPC requests from other environments.
  */
 
-#include "../../include/memory.h"
-#include "../include/syscallLib.h"
-#include "../include/printf.h"
-#include "../include/uLib.h"
+#include "../include/memory.h"
+#include "../user/include/syscallLib.h"
+#include "../user/include/uLib.h"
 #include "../../include/error.h"
-#include "../include/ipc.h"
-#include "../include/fsipc.h"
-#include "../include/file.h"
+#include "../user/include/ipc.h"
+#include "../user/include/fsipc.h"
 
 struct Open {
 	struct File *o_file;	// mapped descriptor for open file
@@ -66,7 +64,7 @@ open_alloc(struct Open **o)
 			case 1:
 				opentab[i].o_fileid += MAXOPEN;
 				*o = &opentab[i];
-				user_bzero((void *)opentab[i].o_ff, PAGE_SIZE);
+				memset((void *)opentab[i].o_ff, 0, PAGE_SIZE);
 				return (*o)->o_fileid;
 		}
 	}
@@ -108,7 +106,7 @@ serve_open(u_int envid, struct Fsreq_open *rq)
 	struct Open *o;
 
 	// Copy in the path, making sure it's null-terminated
-	user_bcopy(rq->req_path, path, 128);
+	memcpy(rq->req_path, path, 128);
 	path[128 - 1] = 0;
 
 	// Find a file id.
@@ -214,7 +212,7 @@ serve_remove(u_int envid, struct Fsreq_remove *rq)
 
 	// Step 1: Copy in the path, making sure it's terminated.
 	// Notice: add \0 to the tail of the path
-	user_bcopy(rq->req_path, path, MAXPATHLEN);
+	memcpy(rq->req_path, path, MAXPATHLEN);
 	path[MAXPATHLEN - 1] = '\0';
 	// Step 2: Remove file from file system and response to user-level process.
 	// Call file_remove and ipc_send an approprite value to corresponding env.

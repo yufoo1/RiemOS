@@ -1,8 +1,10 @@
-#include "../include/fs.h"
-#include "../include/printf.h"
-#include "../include/uLib.h"
-#include "../include/ide.h"
-#include "../../include/error.h"
+#include "../user/include/fs.h"
+#include "../user/include/printf.h"
+#include "../user/include/uLib.h"
+#include "server.h"
+#include "../include/error.h"
+#include "../include/memory.h"
+#include "../user/include/debugf.h"
 
 struct Super *super;
 
@@ -16,13 +18,11 @@ void write_block(u_int blockno);
 // Overview:
 //	Return the virtual address of this disk block. If the `blockno` is greater
 //	than disk's nblocks, panic.
-/*** exercise 5.5 ***/
 u_longlong
 diskaddr(u_int blockno)
 {
 	if (super != NULL && blockno > super->s_nblocks) {
-        printf("diskaddr panic");
-        while(1);
+		user_panic("diskaddr panic");
     }
 	return DISKMAP + blockno * BY2BLK;
 }
@@ -125,12 +125,10 @@ read_block(u_int blockno, void **blk, u_int *isnew)
 {
 	u_longlong va;
 	if (super && blockno >= super->s_nblocks) {
-        printf("reading non-existent block %08x\n", blockno);
-        while(1);
+        user_panic("reading non-existent block %08x\n", blockno);
 	}
 	if (bitmap && block_is_free(blockno)) {
-        printf("reading free block %08x\n", blockno);
-        while(1);
+        user_panic("reading free block %08x\n", blockno);
 	}
 	va = diskaddr(blockno);
 	if (block_is_mapped(blockno)) {	// the block is in memory
@@ -155,12 +153,11 @@ write_block(u_int blockno)
 {
 	u_longlong va;
 	if (!block_is_mapped(blockno)) {
-        printf("write unmapped block %08x", blockno);
-        while(1);
+        user_panic("write unmapped block %08x", blockno);
 	}
 	va = diskaddr(blockno);
 	ide_write((void *)va, blockno * SECT2BLK, SECT2BLK);
-	mapMemoryFromTo(0, va, 0, va, (PTE_V | PTE_R | PTE_G)); // 注意，这里不确定LIBRARY是否可以通过GLOBAL位替代
+	mapMemoryFromTo(0, va, 0, va, (PTE_V | PTE_R | PTE_G)); // TODO，这里不确定LIBRARY是否可以通过GLOBAL位替代
 }
 
 int
@@ -221,17 +218,14 @@ read_super(void)
 	void *blk;
 
 	if ((r = read_block(1, &blk, 0)) < 0) {
-        printf("cannot read superblock: %e", r);
-        while(1);
+        user_panic("cannot read superblock: %e", r);
 	}
 	super = blk;
 	if (super->s_magic != FS_MAGIC) {
         printf("bad file system magic number %x %x", super->s_magic, FS_MAGIC);
-        while(1);
 	}
 	if (super->s_nblocks > DISKMAX / BY2BLK) {
-        printf("file system is too large");
-        while(1);
+        user_panic("file system is too large");
 	}
 	printf("superblock is good\n");
 }
@@ -254,12 +248,12 @@ check_write_block(void)
 {
 	super = 0;
 	read_block(0, 0, 0);
-	user_bcopy((char *)diskaddr(1), (char *)diskaddr(0), PAGE_SIZE);
+	memcpy((char *)diskaddr(1), (char *)diskaddr(0), PAGE_SIZE);
 	strcpy((char *)diskaddr(1), "OOPS!\n");
 	write_block(1);
 	unmapMemoryFrom(0, diskaddr(1));
 	read_block(1, 0, 0);
-	user_bcopy((char *)diskaddr(0), (char *)diskaddr(1), PAGE_SIZE);
+	memcpy((char *)diskaddr(0), (char *)diskaddr(1), PAGE_SIZE);
 	write_block(1);
 	super = (struct Super *)diskaddr(1);
 }
@@ -567,7 +561,7 @@ walk_path(char *path, struct File **pdir, struct File **pfile, char *lastelem)
 			return -E_BAD_PATH;
 		}
 
-		user_bcopy(p, name, path - p);
+		memcpy(p, name, path - p);
 		name[path - p] = '\0';
 		path = skip_slash(path);
 

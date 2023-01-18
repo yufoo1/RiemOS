@@ -1,4 +1,5 @@
 #include "../include/uLib.h"
+#include "../../include/memConfig.h"
 
 char* strcpy(char* s, const char* t) {
     char* os;
@@ -80,33 +81,4 @@ int memcmp(const void* s1, const void* s2, u_int n) {
 
 void* memcpy(void* dst, const void* src, u_int n) {
     return memmove(dst, src, n);
-}
-
-void user_bcopy(void *src, void *dst, u_int len) {
-    void *max;
-    max = dst + len;
-    while (dst + 3 < max) {
-        *(int *) dst = *(int *) src;
-        dst += 4;
-        src += 4;
-    }
-    while (dst < max) {
-        *(char *) dst = *(char *) src;
-        dst += 1;
-        src += 1;
-    }
-}
-
-void user_bzero(void *start, u_int len) {
-    void *max;
-    max = start + len;
-    while (start + 3 < max)
-    {
-        *(int *)start = 0;
-        start += 4;
-    }
-    while (start < max)
-    {
-        *(char *)start++ = 0;
-    }
 }

@@ -1,7 +1,6 @@
 app_dir := app
-fs_dir := fs
 lib_dir := lib
-modules		:= $(app_dir) $(lib_dir) $(fs_dir)
+modules		:= $(app_dir) $(lib_dir)
 
 .PHONY:	build clean $(modules)
 

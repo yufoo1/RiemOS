@@ -7,13 +7,13 @@ boot_dir	:=	$(kernel_dir)/boot
 trap_dir	:=	$(kernel_dir)/trap
 app_dir		:=  $(user_dir)/app
 user_lib_dir	:=	$(user_dir)/lib
-fs_dir 		:=  $(user_dir)/fs
+fs_dir 		:=  fs
 utility_dir	:=  $(kernel_dir)/utility
 linkscript	:= 	$(linker_dir)/Qemu.ld
 vmlinux_img	:=	vmlinux.img
 fs_img		:=	fs.img
 
-modules := 	$(kernel_dir) $(user_dir)
+modules := 	$(kernel_dir) $(user_dir) $(fs_dir)
 objects	:=	$(boot_dir)/*.o \
 		$(driver_dir)/*.o \
 		$(memory_dir)/*.o \
@@ -53,7 +53,7 @@ USER_APP := forkTest.b \
 			ProcessA.b \
 			ProcessB.b
 
-FSIMGFILES := user/fs/motd user/fs/newmotd
+FSIMGFILES := $(fs_dir)/motd $(fs_dir)/newmotd
 
 fs.img: $(FSIMGFILES)
 	dd if=/dev/zero of=./fs.img bs=4096 count=1024 2>/dev/null

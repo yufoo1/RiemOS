@@ -23,6 +23,7 @@ void main() {
 //    PROCESS_CREATE_PRIORITY(ipcTest, 5);
     // sd_test();
     // PROCESS_CREATE_PRIORITY(ideTest, 5);
+//    PROCESS_CREATE_PRIORITY(fsTest, 5);
     trap_init();
     process_yield();
     printf("\n\nAll processes executed successfully!");
@@ -30,16 +31,19 @@ void main() {
 }
 
 void sd_test() {
-    char a = 'A';
-    char b = 'Z';
-    sdWrite(&a, 24, 1);
-    sdWrite(&b, 30, 1);
+    char a[10];
+    a[0] = 'A';
+    a[1] = 'B';
+    a[2] = 0;
+    // char b = 'Z';
+    sdWrite(a, 24, 1);
+    // sdWrite(&b, 30, 1);
     printf("write finished\n");
-    char c = 0;
-    char d = 0;
+    char c[10];
+    // char d = 0;
     sdRead(&c, 24, 1);
-    sdRead(&d, 30, 1);
+    // sdRead(d, 30, 1);
     printf("read finished\n");
-    printf("%c\n", c);
-    printf("%c\n", d);
+    printf("%s\n", c);
+    // printf("%c\n", d);
 }
