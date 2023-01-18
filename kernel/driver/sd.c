@@ -29,6 +29,7 @@ static inline u_char spi_xfer(u_char d)
         cnt++;
         r = REG32(spi, SPI_REG_RXFIFO);
     } while (r < 0);
+
     return (r & 0xFF);
 }
 
@@ -166,16 +167,16 @@ static u_short crc16_round(u_short crc, u_char data) {
 
 
 int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
-    // printf("[SD Read]Read: %x\n", startSector);
+     printf("[SD Read]Read: %x\n", startSector);
     int readTimes = 0;
     int tot = 0;
-
     start:
     tot = sectorNumber;
     volatile u_char *p = (void *)buf;
     int rc = 0;
     int timeout;
     u_char x;
+#define QEMU
 #ifdef QEMU
     if (sd_cmd(0x52, startSector * 512, 0xE1) != 0x00) {
 #else
@@ -183,7 +184,6 @@ int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
 #endif
         sd_cmd_end();
         panic("[SD Read]Read Error, retry times %x\n", readTimes);
-        return 1;
     }
     do {
         u_short crc, crc_exp;
@@ -192,6 +192,7 @@ int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
         crc = 0;
         n = 512;
         timeout = MAX_TIMES;
+        printf("start timer\n");
         while (--timeout) {
             x = sd_dummy();
             if (x == 0xFE)
@@ -203,9 +204,12 @@ int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
         }
 
         do {
+            printf("stuck here, addr: %d\n", (u_int)p);
             u_char x = sd_dummy();
+            printf("?\n");
             *p++ = x;
             crc = crc16_round(crc, x);
+            printf("jump out\n");
         } while (--n > 0);
 
         crc_exp = ((u_short)sd_dummy() << 8);

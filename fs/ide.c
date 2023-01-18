@@ -2,13 +2,7 @@
  * operations on IDE disk.
  */
 
-#include "../include/syscallLib.h"
-#include "../../include/sd.h"
-#include "../../include/process.h"
-#include "../include/printf.h"
-#include "../../include/riscv.h"
-#include "server.h"
-
+#include "../user/include/syscallLib.h"
 void ide_write(void *src, u_int secno, u_int nsecs)
 {
     sd_Write(src, secno, nsecs);

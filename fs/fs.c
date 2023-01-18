@@ -139,6 +139,7 @@ read_block(u_int blockno, void **blk, u_int *isnew)
 		if (isnew) {
 			*isnew = 1;
 		}
+        printf("read block from ide\n");
 		memoryAlloc(0, va, PTE_V | PTE_R);
 		ide_read((void *)va, blockno * SECT2BLK, SECT2BLK);
 	}
@@ -216,11 +217,12 @@ read_super(void)
 {
 	int r;
 	void *blk;
-
+    printf("read super with %lx\n", &blk);
 	if ((r = read_block(1, &blk, 0)) < 0) {
         user_panic("cannot read superblock: %e", r);
 	}
 	super = blk;
+    printf("magic\n");
 	if (super->s_magic != FS_MAGIC) {
         printf("bad file system magic number %x %x", super->s_magic, FS_MAGIC);
 	}

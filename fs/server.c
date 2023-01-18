@@ -307,8 +307,11 @@ int userMain(int argc, char **argv)
 {
 	printf("FS is running\n");
 	printf("FS can do I/O\n");
+    printf("start init serve\n");
 	serve_init();
+    printf("start init fs\n");
 	fs_init();
+    printf("start serve\n");
 	serve();
     return 0;
 }

@@ -25,6 +25,7 @@ objects	:=	$(boot_dir)/*.o \
 .PHONY: build clean $(modules) run
 
 all : vmlinux.img fs.img
+	$(QEMU) -kernel $(vmlinux_img) $(QEMUOPTS)
 
 vmlinux.img: build
 
@@ -45,7 +46,7 @@ clean:
 		done; \
 	rm -rf *.o *~ *.img null.d
 
-run: vmlinux.img fs.img
+run:
 	$(QEMU) -kernel $(vmlinux_img) $(QEMUOPTS)
 
 USER_APP := forkTest.b \

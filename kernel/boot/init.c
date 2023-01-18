@@ -1,8 +1,8 @@
-#include <driver.h>
-#include <memory.h>
-#include <trap.h>
-#include <process.h>
-#include <sd.h>
+#include "../../include/sd.h"
+#include "../../include/driver.h"
+#include "../../include/memory.h"
+#include "../../include/trap.h"
+#include "../../include/syscallLib.h"
 
 void sd_test();
 
@@ -17,13 +17,14 @@ void main() {
     memory_management_init();
     process_management_init();
     sdInit();
-//    PROCESS_CREATE_PRIORITY(ProcessA, 1);
-//    PROCESS_CREATE_PRIORITY(ProcessB, 1);
-//    PROCESS_CREATE_PRIORITY(forkTest, 1);
-//    PROCESS_CREATE_PRIORITY(ipcTest, 5);
-    // sd_test();
-    // PROCESS_CREATE_PRIORITY(ideTest, 5);
-//    PROCESS_CREATE_PRIORITY(fsTest, 5);
+    PROCESS_CREATE_PRIORITY(server, 5)
+//    PROCESS_CREATE_PRIORITY(ProcessA, 1)
+//    PROCESS_CREATE_PRIORITY(ProcessB, 1)
+//    PROCESS_CREATE_PRIORITY(forkTest, 1)
+//    PROCESS_CREATE_PRIORITY(ipcTest, 5)
+//    sd_test();
+//    PROCESS_CREATE_PRIORITY(ideTest, 5)
+//    PROCESS_CREATE_PRIORITY(fsTest, 5)
     trap_init();
     process_yield();
     printf("\n\nAll processes executed successfully!");
@@ -39,11 +40,11 @@ void sd_test() {
     sdWrite(a, 24, 1);
     // sdWrite(&b, 30, 1);
     printf("write finished\n");
-    char c[10];
+    u_char buff[10];
     // char d = 0;
-    sdRead(&c, 24, 1);
+    sdRead(buff, 24, 1);
     // sdRead(d, 30, 1);
     printf("read finished\n");
-    printf("%s\n", c);
+    printf("%s\n", buff);
     // printf("%c\n", d);
 }
