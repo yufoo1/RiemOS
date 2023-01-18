@@ -6,7 +6,6 @@
 #include "../../include/memory.h"
 #include "../../include/process.h"
 #include "../../include/uart.h"
-#include "../../user/include/file.h"
 
 #define MAX_CORES 8
 #define MAX_TIMES 10000
@@ -167,12 +166,13 @@ static u_short crc16_round(u_short crc, u_char data) {
 
 
 int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
-     printf("[SD Read]Read: %x\n", startSector);
+    printf("[SD Read]Read: %x\n", startSector);
     int readTimes = 0;
     int tot = 0;
     start:
     tot = sectorNumber;
     volatile u_char *p = (void *)buf;
+    assert(p != NULL);
     int rc = 0;
     int timeout;
     u_char x;
@@ -204,9 +204,7 @@ int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
         }
 
         do {
-            printf("stuck here, addr: %d\n", (u_int)p);
             u_char x = sd_dummy();
-            printf("?\n");
             *p++ = x;
             crc = crc16_round(crc, x);
             printf("jump out\n");
