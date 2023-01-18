@@ -36,6 +36,7 @@ void process_management_init() {
 u_int generate_pid(Process *p) {
     static u_int nextId = 0;
     u_int processId = (++nextId << (1 + LOG_PROCESS_NUM)) | (u_int)(p - processes);
+    printf("pid is: %d\n", processId);
     return processId;
 }
 

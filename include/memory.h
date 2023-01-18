@@ -60,7 +60,7 @@ void mmu_init();
 #define PTE_U (1ll << 4)
 #define PTE_G (1ll << 5)
 #define PTE_A (1ll << 6)
-#define PTE_D (1 << 7)
+#define PTE_D (1ll << 7)
 #define PTE_C (1ll << 8)
 #define PERM_WIDTH 10
 #define PTE2PERM(pte) (((u_longlong)(pte)) & ~((1ull << 54) - (1ull << 10)))

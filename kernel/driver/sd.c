@@ -192,7 +192,6 @@ int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
         crc = 0;
         n = 512;
         timeout = MAX_TIMES;
-        printf("start timer\n");
         while (--timeout) {
             x = sd_dummy();
             if (x == 0xFE)
@@ -207,7 +206,6 @@ int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
             u_char x = sd_dummy();
             *p++ = x;
             crc = crc16_round(crc, x);
-            printf("jump out\n");
         } while (--n > 0);
 
         crc_exp = ((u_short)sd_dummy() << 8);

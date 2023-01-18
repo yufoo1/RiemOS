@@ -1,10 +1,10 @@
-#include <driver.h>
-#include <process.h>
-#include <type.h>
-#include <memory.h>
-#include "syscallLib.h"
-#include "error.h"
-#include "sd.h"
+#include "../../include/driver.h"
+#include "../../include/process.h"
+#include "../../include/type.h"
+#include "../../include/memory.h"
+#include "../../include/syscallLib.h"
+#include "../../include/error.h"
+#include "../../include/sd.h"
 
 void (*syscallVector[])(void) = {
      [SYSCALL_PUTCHAR]                     syscallPutchar,
@@ -212,11 +212,7 @@ void syscallMemoryAlloc() {
         trapframe->a0 = -E_INVAL;
         return;
     }
-//    if (va >= UTOP) {
-//        trapframe->a0 = -E_INVAL;
-//        return;
-//    }
-    if (perm | PTE_C) {
+    if (perm & PTE_C) {
         trapframe->a0 = -E_INVAL;
         return;
     }

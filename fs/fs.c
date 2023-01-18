@@ -139,7 +139,8 @@ read_block(u_int blockno, void **blk, u_int *isnew)
 		if (isnew) {
 			*isnew = 1;
 		}
-        printf("read block from ide\n");
+        printf("va is %lx\n", va);
+        printf("pid is %d\n", getprocessId());
 		memoryAlloc(0, va, PTE_V | PTE_R);
 		ide_read((void *)va, blockno * SECT2BLK, SECT2BLK);
 	}
