@@ -1,5 +1,4 @@
 // See LICENSE for license details.
-
 #ifndef _SIFIVE_UART_H
 #define _SIFIVE_UART_H
 

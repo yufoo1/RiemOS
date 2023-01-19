@@ -2,7 +2,6 @@
 #include "../../include/driver.h"
 #include "../../include/memory.h"
 #include "../../include/trap.h"
-#include "../../include/syscallLib.h"
 
 void sd_test();
 
@@ -16,9 +15,9 @@ void main() {
     memory_management_init();
     process_management_init();
     sdInit();
-    PROCESS_CREATE_PRIORITY(server, 5)
-//    PROCESS_CREATE_PRIORITY(ProcessA, 1)
-//    PROCESS_CREATE_PRIORITY(ProcessB, 1)
+//    PROCESS_CREATE_PRIORITY(server, 5)
+    PROCESS_CREATE_PRIORITY(ProcessA, 1)
+    PROCESS_CREATE_PRIORITY(ProcessB, 1)
 //    PROCESS_CREATE_PRIORITY(forkTest, 1)
 //    PROCESS_CREATE_PRIORITY(ipcTest, 5)
 //    sd_test();
@@ -42,9 +41,11 @@ void sd_test() {
     u_char* buff;
     printf("%lx\b", &buff);
     // char d = 0;
-    sdRead(&buff, 24, 1);
+    void* ptr = (void*)0x20001000;
+//    sdRead(&buff, 24, 1);
+    sdRead(ptr, 24, 1);
     // sdRead(d, 30, 1);
     printf("read finished\n");
-    printf("value: %c\n", *(((char*)(&buff) + 1)));
+    printf("value: %c\n", *((char*)ptr));
     // printf("%c\n", d);
 }

@@ -1,6 +1,7 @@
 #include "../include/printf.h"
 #include "../../include/process.h"
 #include "../../include/error.h"
+#include "../include/debugf.h"
 
 void
 ipc_send(u_longlong whom, u_longlong val, u_longlong srcva, u_longlong perm)
@@ -15,8 +16,7 @@ ipc_send(u_longlong whom, u_longlong val, u_longlong srcva, u_longlong perm)
         return;
     }
 
-    printf("error in ipc_send: %d", r);
-    while(1);
+    user_panic("error in ipc_send: %d", r);
 }
 
 // Receive a value.  Return the value and store the caller's envid

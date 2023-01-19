@@ -1,7 +1,7 @@
 // See LICENSE for license details.
 
-#ifndef _SIFIVE_PLATFORM_H
-#define _SIFIVE_PLATFORM_H
+#ifndef _MMIO_H
+#define _MMIO_H
 
 #include <type.h>
 
@@ -32,12 +32,10 @@
 #define MEMORY_MEM_SIZE _AC(0x40000000,UL)
 #define PLIC_CTRL_ADDR _AC(0xc000000,UL)
 #define PLIC_CTRL_SIZE _AC(0x4000000,UL)
-//#define SPI_CTRL_ADDR _AC(0x64001000,UL)
 #define SPI_CTRL_ADDR _AC(0x10050000,UL)
 #define SPI_CTRL_SIZE _AC(0x1000,UL)
 #define TEST_CTRL_ADDR _AC(0x4000,UL)
 #define TEST_CTRL_SIZE _AC(0x1000,UL)
-//#define UART_CTRL_ADDR _AC(0x64000000,UL)
 #define UART_CTRL_ADDR _AC(0x10010000,UL)
 #define UART_CTRL_SIZE _AC(0x1000,UL)
 
@@ -109,4 +107,4 @@ static volatile u_int * const uart = (void *)(UART_CTRL_ADDR);
 // Misc
 
 
-#endif /* _SIFIVE_PLATFORM_H */
+#endif

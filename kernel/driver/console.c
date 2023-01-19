@@ -1,7 +1,6 @@
 #include "../../include/driver.h"
 #include "../../include/uart.h"
 #include "../../include/process.h"
-#include "../../user/include/file.h"
 
 static u_longlong uartBaseAddr = 0x10010000;
 
@@ -58,8 +57,6 @@ int consoleWrite(int user_src, u_longlong src, u_longlong start, u_longlong n) {
     return i;
 }
 
-#define GET_BUF_LEN 64
-char buf[GET_BUF_LEN];
 int consoleRead(int isUser, u_longlong dst, u_longlong start, u_longlong n) {
     int i;
     for (i = 0; i < n; i++) {

@@ -1,5 +1,5 @@
-#ifndef _SYS_QUEUE_H_
-#define _SYS_QUEUE_H_
+#ifndef _QUEUE_H_
+#define _QUEUE_H_
 
 /*
  * This file defines three types of data structures: lists, tail queues,
@@ -197,5 +197,5 @@
                 struct type **tqe_prev; /* address of previous next element */  \
         }
 
-#endif  /* !_SYS_QUEUE_H_ */
+#endif
 

@@ -134,7 +134,6 @@ void syscallSdRead() {
 }
 
 void syscallSdWrite() {
-    printf("wa\n");
     Trapframe* trapframe = getTrapFrame();
     u_char* buf = (u_char *) trapframe->a0;
     u_longlong startSector = trapframe->a1;

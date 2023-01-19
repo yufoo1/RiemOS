@@ -25,7 +25,6 @@ objects	:=	$(boot_dir)/*.o \
 .PHONY: build clean $(modules) run
 
 all : vmlinux.img fs.img
-	$(QEMU) -kernel $(vmlinux_img) $(QEMUOPTS)
 
 vmlinux.img: build
 
@@ -44,13 +43,16 @@ clean:
 		do \
 			$(MAKE) --directory=$$d clean; \
 		done; \
-	rm -rf *.o *~ *.img null.d
+	rm -rf *.o *~ *.img null.d *.txt
 
 run:
 	$(QEMU) -kernel $(vmlinux_img) $(QEMUOPTS)
 
 gdb:
 	$(QEMU) -kernel $(vmlinux_img) $(QEMUOPTS) -nographic -s -S
+
+objdump:
+	$(OBJDUMP) -DS vmlinux.img > vmlinux.txt
 
 USER_APP := forkTest.b \
 			ipcTest.b \

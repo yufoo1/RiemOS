@@ -56,7 +56,7 @@ static u_char sd_cmd(u_char cmd, u_int arg, u_char crc)
     do {
         r = sd_dummy();
         if (!(r & 0x80)) {
-            //printf("sd:cmd: %x\r\n", r);
+            printf("sd:cmd: %x\r\n", r);
             goto done;
         }
     } while (--n > 0);
@@ -167,7 +167,7 @@ static u_short crc16_round(u_short crc, u_char data) {
 
 
 int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
-    printf("[SD Read]Read: %x\n", startSector);
+    printf("[SD Read]Read: %x and buf is at %lx\n", startSector, buf);
     int readTimes = 0;
     int tot = 0;
     start:
@@ -177,7 +177,7 @@ int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
     int rc = 0;
     int timeout;
     u_char x;
-    printf("p addr is %lx\n", p);
+    printf("ac\n");
 #ifdef QEMU
     if (sd_cmd(0x52, startSector * 512, 0xE1) != 0x00) {
 #else
@@ -186,16 +186,14 @@ int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
         sd_cmd_end();
         panic("[SD Read]Read Error, retry times %x\n", readTimes);
     }
-    printf("wa\n");
     do {
-
         u_short crc, crc_exp;
         long n;
-
         crc = 0;
         n = 512;
         timeout = MAX_TIMES;
         while (--timeout) {
+            printf("wa\n");
             x = sd_dummy();
             if (x == 0xFE)
                 break;

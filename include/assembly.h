@@ -1,9 +1,9 @@
 //
-// Created by yufu on 2022/7/4.
+// Created by yufoo1 on 2022/7/4.
 //
 
-#ifndef FIBOS_ASSEMBLY_H
-#define FIBOS_ASSEMBLY_H
+#ifndef _ASSEMBLY_H
+#define _ASSEMBLY_H
 #define KERNEL_SATP 0
 #define KERNEL_SP (KERNEL_SATP + 8)
 #define STVEC (KERNEL_SP + 8)
@@ -53,4 +53,4 @@
 #define SCAUSE_ENVIRONMENT_CALL 8
 #define SCAUSE_LOAD_PAGE_FAULT 13
 #define SCAUSE_STORE_PAGE_FAULT 15
-#endif //FIBOS_ASSEMBLY_H
+#endif _ASSEMBLY_H

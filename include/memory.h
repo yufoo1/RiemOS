@@ -1,5 +1,5 @@
-#ifndef _PAGE_H_
-#define _PAGE_H_
+#ifndef _MEMORY_H_
+#define _MEMORY_H_
 
 #include "./type.h"
 #include "./queue.h"

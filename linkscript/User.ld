@@ -1,6 +1,6 @@
 ENTRY(_userStart)
 SECTIONS {
-    . = 0x40000000;
+    . = 0x20000000;
 	.text : {
 		*(.text)
 	}
@@ -13,7 +13,7 @@ SECTIONS {
 		*(.bss)
 	}
   	. = ALIGN(4096);
-	. = 0x040200000;
+	. = 0x020200000;
 	.fsipcbuf : {
 		*(.buffer)
 		. = ALIGN(4096);

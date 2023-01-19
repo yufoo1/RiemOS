@@ -1,5 +1,5 @@
-#ifndef _TIMER_H_
-#define _TIMER_H_
+#ifndef _KCLOCK_H_
+#define _KCLOCK_H_
 
 #define INTERVAL 100000
 

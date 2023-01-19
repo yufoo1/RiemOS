@@ -11,7 +11,7 @@
 
 /* Disk block n, when in memory, is mapped into the file system
  * server's address space at DISKMAP+(n*BY2BLK). */
-#define DISKMAP 0x20000000
+#define DISKMAP 0x30000000
 
 /* Maximum disk size we can handle (1GB) */
 #define DISKMAX 0x40000000
