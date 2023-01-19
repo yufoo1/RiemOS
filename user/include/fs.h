@@ -55,13 +55,6 @@ struct Super {
 	struct File s_root;	// Root directory node
 };
 
-/* Disk block n, when in memory, is mapped into the file system
- * server's address space at DISKMAP+(n*BY2BLK). */
-#define DISKMAP		0x10000000
-
-/* Maximum disk size we can handle (1GB) */
-#define DISKMAX		0x40000000
-
 void fs_init(void);
 void fs_sync(void);
 extern u_int *bitmap;

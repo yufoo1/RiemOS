@@ -14,7 +14,6 @@ static int file_read(struct Fd *fd, void *buf, u_int n, u_int offset);
 static int file_write(struct Fd *fd, const void *buf, u_int n, u_int offset);
 static int file_stat(struct Fd *fd, struct Stat *stat);
 
-
 // Dot represents choosing the variable of the same name within struct declaration
 // to assign, and no need to consider order of variables.
 static struct Dev devfile = {

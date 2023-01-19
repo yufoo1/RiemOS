@@ -12,7 +12,6 @@ void main() {
     for (u_longlong *i = bssStart; i < bssEnd; i++) {
         *i = 0;
     }
-    consoleInit();
     printf("Hello! Welcome to FibOS!\n\n");
     memory_management_init();
     process_management_init();

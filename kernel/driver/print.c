@@ -1,6 +1,6 @@
-#include <driver.h>
-#include <riscv.h>
-#include <kclock.h>
+#include "../../include/driver.h"
+#include "../../include/riscv.h"
+#include "../../include/kclock.h"
 
 #define IsDigit(x)  (((x) >= '0') && ((x) <= '9'))
 

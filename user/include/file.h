@@ -12,14 +12,6 @@
 #define minor(dev) ((dev)&0xFFFF)
 #define mkdev(m, n) ((uint)((m) << 16 | (n)))
 
-// map major device number to device functions.
-//struct devsw {
-//    int (*read)(int isUser, u_longlong dst, u_longlong start, u_longlong len);
-//    int (*write)(int isUser, u_longlong src, u_longlong start, u_longlong len);
-//};
-
-//extern struct Dev devtab[];
-
 #define DEV_SD 0
 #define DEV_CONSOLE 1
 

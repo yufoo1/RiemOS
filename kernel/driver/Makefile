@@ -1,4 +1,4 @@
-INCLUDES := -I../../include
+INCLUDES := -I../../include -I../../user/include
 
 target = console.o print.o sd.o
 

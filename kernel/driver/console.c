@@ -1,7 +1,6 @@
-#include <type.h>
-#include <driver.h>
-#include <uart.h>
-#include <process.h>
+#include "../../include/driver.h"
+#include "../../include/uart.h"
+#include "../../include/process.h"
 #include "../../user/include/file.h"
 
 static u_longlong uartBaseAddr = 0x10010000;
@@ -71,9 +70,4 @@ int consoleRead(int isUser, u_longlong dst, u_longlong start, u_longlong n) {
              break;
     }
     return i;
-}
-
-void consoleInit() {
-//     devsw[DEV_CONSOLE].read = consoleRead;
-//     devsw[DEV_CONSOLE].write = consoleWrite;
 }

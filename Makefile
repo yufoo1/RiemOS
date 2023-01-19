@@ -49,6 +49,9 @@ clean:
 run:
 	$(QEMU) -kernel $(vmlinux_img) $(QEMUOPTS)
 
+gdb:
+	$(QEMU) -kernel $(vmlinux_img) $(QEMUOPTS) -nographic -s -S
+
 USER_APP := forkTest.b \
 			ipcTest.b \
 			ProcessA.b \

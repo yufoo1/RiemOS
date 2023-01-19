@@ -6,6 +6,9 @@
 #include "../../include/memory.h"
 #include "../../include/process.h"
 #include "../../include/uart.h"
+#include "../../include/sd.h"
+#include "../../user/include/file.h"
+#define QEMU
 
 #define MAX_CORES 8
 #define MAX_TIMES 10000
@@ -41,7 +44,6 @@ static u_char sd_cmd(u_char cmd, u_int arg, u_char crc)
 {
     unsigned long n;
     u_char r;
-
     REG32(spi, SPI_REG_CSMODE) = SPI_CSMODE_HOLD;
     sd_dummy();
     spi_xfer(cmd);
@@ -50,7 +52,6 @@ static u_char sd_cmd(u_char cmd, u_int arg, u_char crc)
     spi_xfer(arg >> 8);
     spi_xfer(arg);
     spi_xfer(crc);
-
     n = 1000;
     do {
         r = sd_dummy();
@@ -176,7 +177,7 @@ int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
     int rc = 0;
     int timeout;
     u_char x;
-#define QEMU
+    printf("p addr is %lx\n", p);
 #ifdef QEMU
     if (sd_cmd(0x52, startSector * 512, 0xE1) != 0x00) {
 #else
@@ -185,7 +186,9 @@ int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
         sd_cmd_end();
         panic("[SD Read]Read Error, retry times %x\n", readTimes);
     }
+    printf("wa\n");
     do {
+
         u_short crc, crc_exp;
         long n;
 
@@ -516,7 +519,7 @@ int sdCardWrite(int isUser, u_longlong src, u_longlong startAddr, u_longlong n) 
 }
 
 
-int sdInit(void) {
+void sdInit(void) {
     REG32(uart, UART_REG_TXCTRL) = UART_TXEN;
 
     sd_poweron(3000);
@@ -538,9 +541,9 @@ int sdInit(void) {
         panic("[SD card]ACMD41 error!\n");
     }
 
-//    if (sd_cmd58()) {
-//        panic("[SD card]CMD58 error!\n");
-//    }
+    if (sd_cmd58()) {
+        panic("[SD card]CMD58 error!\n");
+    }
 
     if (sd_cmd16()) {
         panic("[SD card]CMD16 error!\n");
