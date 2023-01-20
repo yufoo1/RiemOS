@@ -12,7 +12,7 @@ SECTIONS {
         . = ALIGN(4096);
         _trampoline = .;
         *(.trampoline)
-        . = ALIGN(4096);
+        . = ALIGN(8192);
         textEnd = .;
     }
     . = ALIGN(4096);

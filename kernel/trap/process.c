@@ -204,6 +204,7 @@ void process_run(Process* p) {
     }
     p->state = RUNNABLE;
     curProcess = p;
+    printf("curProcess's trapframe is %lx and trapframe addr is %lx, size is %lx\n", &(curProcess->trapframe), trapframe, sizeof(Trapframe));
     bcopy(&(curProcess->trapframe), trapframe, sizeof(Trapframe));
     u_longlong sp = KERNEL_STACK_TOP;
     asm volatile("ld sp, 0(%0)" : :"r"(&sp): "memory");
@@ -262,6 +263,7 @@ void process_yield() {
         }
     }
     count--;
+    printf("process id is %x\n", process->id);
     process_run(process);
 }
 

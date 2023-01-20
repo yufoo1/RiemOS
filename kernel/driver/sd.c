@@ -391,7 +391,7 @@ retry:
 
 // This is CMD24
 int sdWrite(u_char *buf, u_longlong startSector, u_int sectorNumber) {
-    // printf("[SD Write]Write: %x %d\n", startSector, sectorNumber);
+     printf("[SD Write]Write: %x %d\n", startSector, sectorNumber);
     u_char *p = buf;
     u_char x;
     int writeTimes = 0;

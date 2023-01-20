@@ -330,32 +330,42 @@ u_longlong vir2phy(u_longlong* pagetable, u_longlong va, int* cow) {
  }
 
 void bcopy(void *src, void *dst, u_int len) {
-    void *max;
-    max = dst + len;
-    while (dst + 3 < max) {
-        *(int *) dst = *(int *) src;
+    void* max = dst + len;
+    if (((u_longlong)src & 3) != ((u_longlong)dst & 3)) {
+        while (dst < max) {
+            *(char *)dst++ = *(char *)src++;
+        }
+        return;
+    }
+
+    while (((u_longlong)dst & 3) && dst < max) {
+        *(char *)dst++ = *(char *)src++;
+    }
+
+    while (dst + 4 <= max) {
+        *(u_int*)dst = *(u_int*)src;
         dst += 4;
         src += 4;
     }
     while (dst < max) {
-        *(char *) dst = *(char *) src;
-        dst += 1;
-        src += 1;
+        *(char *)dst++ = *(char *)src++;
     }
 }
 
 
 void bzero(void *start, u_int len)
 {
-    void *max;
-    max = start + len;
-    while (start + 3 < max)
-    {
-        *(int *)start = 0;
+    void* max = start + len;
+    while (((u_longlong)start & 3) && start < max) {
+        *(u_char*)start++ = 0;
+    }
+
+    while (start + 4 <= max) {
+        *(u_int*)start = 0;
         start += 4;
     }
-    while (start < max)
-    {
-        *(char *)start++ = 0;
+
+    while(start < max) {
+        *(u_char*)start++ = 0;
     }
 }
