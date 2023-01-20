@@ -15,12 +15,12 @@ void main() {
     memory_management_init();
     process_management_init();
     sdInit();
-    PROCESS_CREATE_PRIORITY(server, 5)
+//    PROCESS_CREATE_PRIORITYITY(server, 5)
 //    PROCESS_CREATE_PRIORITY(ProcessA, 1)
 //    PROCESS_CREATE_PRIORITY(ProcessB, 1)
 //    PROCESS_CREATE_PRIORITY(forkTest, 1)
 //    PROCESS_CREATE_PRIORITY(ipcTest, 5)
-//    sd_test();
+    sd_test();
 //    PROCESS_CREATE_PRIORITY(ideTest, 5)
 //    PROCESS_CREATE_PRIORITY(fsTest, 5)
     trap_init();
@@ -41,7 +41,7 @@ void sd_test() {
     u_char* buff;
     printf("%lx\b", &buff);
     // char d = 0;
-    void* ptr = (void*)0x20001000;
+    void* ptr = (void*)0x30001000;
 //    sdRead(&buff, 24, 1);
     sdRead(ptr, 24, 1);
     // sdRead(d, 30, 1);

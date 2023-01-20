@@ -231,6 +231,7 @@ void syscallMemoryAlloc() {
         return;
     }
     trapframe->a0 = 0;
+    printf("memory alloc yes\n");
 }
 
 void syscallCheckVaIsMap() {

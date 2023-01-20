@@ -177,7 +177,6 @@ int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
     int rc = 0;
     int timeout;
     u_char x;
-    printf("ac\n");
 #ifdef QEMU
     if (sd_cmd(0x52, startSector * 512, 0xE1) != 0x00) {
 #else
@@ -193,19 +192,19 @@ int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
         n = 512;
         timeout = MAX_TIMES;
         while (--timeout) {
-            printf("wa\n");
             x = sd_dummy();
             if (x == 0xFE)
                 break;
         }
-
         if (!timeout) {
             goto retry;
         }
 
         do {
             u_char x = sd_dummy();
+            printf("wa with addr %lx\n", p);
             *p++ = x;
+            printf("ac\n");
             crc = crc16_round(crc, x);
         } while (--n > 0);
 
@@ -219,7 +218,6 @@ int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
         }
     } while (--tot > 0);
     //sd_cmd_end();
-
     sd_cmd(0x4C, 0, 0x01);
     timeout = MAX_TIMES;
     while (--timeout) {

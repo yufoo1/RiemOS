@@ -56,7 +56,7 @@ static void virtual_memory_map() {
     extern char trampoline[];
     page_insert(kernelPageDirectory, TRAMPOLINE_BASE, (u_longlong)trampoline,PTE_R | PTE_W | PTE_X | PTE_A | PTE_D);
     page_insert(kernelPageDirectory, TRAMPOLINE_BASE + PAGE_SIZE, (u_longlong)trampoline + PAGE_SIZE,PTE_R | PTE_W | PTE_X | PTE_A | PTE_D);
-//    page_insert(kernelPageDirectory, 0x20001000, 0x20001000, PTE_R | PTE_X | PTE_W | PTE_A | PTE_D); // sd_test
+//    page_insert(kernelPageDirectory, 0x30001000, 0x30001000, PTE_R | PTE_X | PTE_W | PTE_A | PTE_D); // sd_test
 }
 
 void mmu_init() {
