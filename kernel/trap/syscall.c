@@ -200,6 +200,7 @@ void syscallUnmapMemoryFrom() {
 }
 
 void syscallMemoryAlloc() {
+    printf("start alloc\n");
     Trapframe* trapframe = getTrapFrame();
     u_longlong pid = trapframe->a0;
     u_longlong va = trapframe->a1;
@@ -231,7 +232,7 @@ void syscallMemoryAlloc() {
         return;
     }
     trapframe->a0 = 0;
-    printf("memory alloc yes\n");
+    printf("memory alloc yes with va %lx and pa %lx\n", va, page2pa(ppage));
 }
 
 void syscallCheckVaIsMap() {

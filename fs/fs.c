@@ -140,7 +140,7 @@ read_block(u_int blockno, void **blk, u_int *isnew)
 			*isnew = 1;
 		}
         printf("%lx\n", getprocessId());
-		memoryAlloc(0, va, PTE_R | PTE_X | PTE_W | PTE_A | PTE_D);
+		memoryAlloc(0, va, PTE_R | PTE_X | PTE_W | PTE_A | PTE_D | PTE_V);
 		ide_read((void *)va, blockno * SECT2BLK, SECT2BLK);
 	}
 	if (blk) {
