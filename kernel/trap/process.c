@@ -107,7 +107,7 @@ void copyKernelPgdir(u_longlong* pgdir) {
     extern u_longlong kernelPageDirectory[];
     u_char* ptr = (u_char*)pgdir;
     for(int i = 0; i < PGSIZE; ++i) {
-        ptr = *(((u_char*)kernelPageDirectory) + i);
+        *ptr = *(((u_char*)kernelPageDirectory) + i);
         ptr++;
     }
 }
