@@ -61,6 +61,7 @@ int pid2Process(u_int processId, struct Process **process, int checkPerm) {
 
     if (processId == 0) {
         *process = curProcess;
+        printf("pid2Process: %x\n", curProcess->id);
         return 0;
     }
 
@@ -223,11 +224,10 @@ Process* myproc() {
 // Returns 0 on success, -1 on error.
 int either_copyout(int user_dst, u_longlong dst, void* src, u_longlong len) {
     if (user_dst) {
-        // struct Process* p = myproc();//because only this branch uses p->pgdir, so it need call myproc
-        // return copyout(p->pgdir, dst, src, len);
-        return 0;
+//         struct Process* p = myproc();//because only this branch uses p->pgdir, so it need call myproc
+//         return copyout(p->pgdir, dst, src, len);
     } else {
-        // memmove((char*)dst, src, len);
+//        memmove((char*)dst, src, len);
         return 0;
     }
 }

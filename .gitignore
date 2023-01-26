@@ -6,4 +6,7 @@
 *.exe
 *.bin
 *.b.c
+*.o
+*.x
+*.b.txt
 *BinaryToC
