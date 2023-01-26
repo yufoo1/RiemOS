@@ -103,6 +103,15 @@ int process_setup(Process *p) {
     return 0;
 }
 
+void copyKernelPgdir(u_longlong* pgdir) {
+    extern u_longlong kernelPageDirectory[];
+    u_char* ptr = (u_char*)pgdir;
+    for(int i = 0; i < PGSIZE; ++i) {
+        ptr = *(((u_char*)kernelPageDirectory) + i);
+        ptr++;
+    }
+}
+
 int process_alloc(Process **new, u_longlong parentId) {
     int r;
     Process *p;
@@ -120,7 +129,7 @@ int process_alloc(Process **new, u_longlong parentId) {
     p->state = RUNNABLE;
     p->parentId = parentId;
     p->trapframe.sp = USER_STACK_TOP;
-
+    copyKernelPgdir(p->pgdir);
     *new = p;
     return 0;
 }
