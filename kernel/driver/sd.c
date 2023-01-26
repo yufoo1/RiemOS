@@ -202,9 +202,9 @@ int sdRead(u_char *buf, u_longlong startSector, u_int sectorNumber) {
 
         do {
             u_char x = sd_dummy();
-            printf("wa with addr %lx\n", p);
+            printf("write once\n");
             *p++ = x;
-            printf("ac\n");
+            printf("write once yes\n");
             crc = crc16_round(crc, x);
         } while (--n > 0);
 

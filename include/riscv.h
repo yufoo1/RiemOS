@@ -44,6 +44,7 @@ static inline void w_mepc(u_longlong x) {
 #define SSTATUS_UPIE (1L << 4) // User Previous Interrupt Enable
 #define SSTATUS_SIE (1L << 1)  // Supervisor Interrupt Enable
 #define SSTATUS_UIE (1L << 0)  // User Interrupt Enable
+#define SSTATUS_SUM (1L << 18)
 
 static inline u_longlong r_sstatus() {
     u_longlong x;

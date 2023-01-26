@@ -1,11 +1,11 @@
-#include <riscv.h>
-#include <driver.h>
-#include <kclock.h>
-#include <trap.h>
-#include <process.h>
-#include <memory.h>
-#include "assembly.h"
-#include "syscallLib.h"
+#include "../../include/riscv.h"
+#include "../../include/driver.h"
+#include "../../include/kclock.h"
+#include "../../include/trap.h"
+#include "../../include/process.h"
+#include "../../include/memory.h"
+#include "../../include/assembly.h"
+#include "../../include/syscallLib.h"
 
 extern Process *curProcess;
 
@@ -13,7 +13,7 @@ void trap_init() {
     printf("Trap init start...\n");
     w_stvec((u_longlong)kernelVec);
 //    w_sstatus(SSTATUS_SIE | SSTATUS_SPIE | SSTATUS_UIE | SSTATUS_UPIE);
-    w_sstatus(SSTATUS_SIE | SSTATUS_SPIE);
+    w_sstatus(SSTATUS_SIE | SSTATUS_SPIE | SSTATUS_SUM);
     w_sie(SIE_SEIE | SIE_SSIE | SIE_STIE);
     setNextTimeInterrupt();
     printf("Trap init finish!\n");

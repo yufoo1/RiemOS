@@ -140,8 +140,9 @@ read_block(u_int blockno, void **blk, u_int *isnew)
 			*isnew = 1;
 		}
         printf("%lx\n", getprocessId());
-		memoryAlloc(0, va, PTE_R | PTE_X | PTE_W | PTE_A | PTE_D | PTE_V);
+		memoryAlloc(0, va, PTE_R | PTE_X | PTE_W | PTE_A | PTE_D | PTE_V | PTE_U);
 		ide_read((void *)va, blockno * SECT2BLK, SECT2BLK);
+        printf("read back\n");
 	}
 	if (blk) {
 		*blk = (void *)va;
@@ -222,10 +223,16 @@ read_super(void)
         user_panic("cannot read superblock: %e", r);
 	}
 	super = blk;
+    if (super == NULL) {
+        user_panic("super is NULL!\n");
+    } else {
+        printf("super is not NULL!\n");
+    }
     printf("magic\n");
 	if (super->s_magic != FS_MAGIC) {
         printf("bad file system magic number %x %x", super->s_magic, FS_MAGIC);
 	}
+    printf("1\n");
 	if (super->s_nblocks > DISKMAX / BY2BLK) {
         user_panic("file system is too large");
 	}
