@@ -9,4 +9,5 @@
 *.o
 *.x
 *.b.txt
+*.txt
 *BinaryToC

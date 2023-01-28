@@ -43,10 +43,7 @@ userVector:
     ld t0, STVEC(a0)
     csrr t1, sepc
     sd t1, SEPC(a0)
-//    ld t1, KERNEL_SATP(a0)
-//    csrw satp, t1
-//    sfence.vma
-    jr t0 // jump to handle the trap
+    jr t0
 
 .globl userReturn
 userReturn:

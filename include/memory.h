@@ -88,5 +88,6 @@ int page_walk(u_longlong *pgdir, u_longlong va, bool create, u_longlong **pte);
 u_longlong vir2phy(u_longlong* pagetable, u_longlong va, int* cow);
 int copyin(u_longlong* pagetable, char* dst, u_longlong srcva, u_longlong len);
 int copyout(u_longlong* pagetable, u_longlong dstva, char* src, u_longlong len);
+void initPgdir(u_longlong* pgdir);
 
 #endif

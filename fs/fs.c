@@ -219,20 +219,16 @@ read_super(void)
 	int r;
 	void *blk;
     printf("read super with %lx\n", &blk);
+    printf("MAGIC: %x\n", FS_MAGIC);
 	if ((r = read_block(1, &blk, 0)) < 0) {
         user_panic("cannot read superblock: %e", r);
 	}
 	super = blk;
-    if (super == NULL) {
-        user_panic("super is NULL!\n");
-    } else {
-        printf("super is not NULL!\n");
-    }
-    printf("magic\n");
-	if (super->s_magic != FS_MAGIC) {
-        printf("bad file system magic number %x %x", super->s_magic, FS_MAGIC);
+    printf("read back and MAGIC: %x\n", FS_MAGIC);
+    if (super->s_magic != FS_MAGIC) {
+        printf("super s_magic is %x\n", super->s_magic);
+        user_panic("bad file system magic number %x and %x\n", super->s_magic, FS_MAGIC);
 	}
-    printf("1\n");
 	if (super->s_nblocks > DISKMAX / BY2BLK) {
         user_panic("file system is too large");
 	}

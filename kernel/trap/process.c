@@ -53,7 +53,7 @@ void process_destory(Process *p) {
 
 void process_free(Process *p) {
     pgdir_free(p->pgdir);
-    p->state = FREE; // new
+    p->state = FREE;
 }
 
 int pid2Process(u_int processId, struct Process **process, int checkPerm) {
@@ -78,9 +78,12 @@ int pid2Process(u_int processId, struct Process **process, int checkPerm) {
             return -E_BAD_ENV;
         }
     }
-
     *process = p;
     return 0;
+}
+
+void copyKernelPgdir(u_longlong* pgdir) {
+    initPgdir(pgdir);
 }
 
 int process_setup(Process *p) {
@@ -96,20 +99,9 @@ int process_setup(Process *p) {
     page_alloc(&page);
     extern u_longlong kernelPageDirectory[];
     page_insert(kernelPageDirectory, getProcessTopSp(p) - PGSIZE, page2pa(page), PTE_R | PTE_W | PTE_X);
-
-    extern char trampoline[];
-    page_insert(p->pgdir, TRAMPOLINE_BASE, (u_longlong) trampoline,PTE_R | PTE_W | PTE_X);
-    page_insert(p->pgdir, TRAMPOLINE_BASE + PAGE_SIZE, ((u_longlong) trampoline) + PAGE_SIZE,PTE_R | PTE_W | PTE_X);
+    page_insert(p->pgdir, getProcessTopSp(p) - PGSIZE, page2pa(page), PTE_R | PTE_W | PTE_X);
+    copyKernelPgdir(p->pgdir);
     return 0;
-}
-
-void copyKernelPgdir(u_longlong* pgdir) {
-    extern u_longlong kernelPageDirectory[];
-    u_char* ptr = (u_char*)pgdir;
-    for(int i = 0; i < PGSIZE; ++i) {
-        *ptr = *(((u_char*)kernelPageDirectory) + i);
-        ptr++;
-    }
 }
 
 int process_alloc(Process **new, u_longlong parentId) {
@@ -129,7 +121,6 @@ int process_alloc(Process **new, u_longlong parentId) {
     p->state = RUNNABLE;
     p->parentId = parentId;
     p->trapframe.sp = USER_STACK_TOP;
-    copyKernelPgdir(p->pgdir);
     *new = p;
     return 0;
 }
@@ -197,6 +188,7 @@ void processCreatePriority(u_char *binary, u_int size, u_int priority) {
     }
     p->priority = priority;
     u_longlong entryPoint;
+    printf("before load elf and p is %d\n", p->id);
     if (loadElf(binary, size, &entryPoint, p, codeMapper) < 0) {
         panic("process create error\n");
     }
@@ -262,17 +254,21 @@ void process_yield() {
         process->state = RUNNABLE;
     }
     while ((count == 0) || !process || (process->state != RUNNABLE)) {
-        if (process)
+        if (process) {
+            printf("now process id %d\n", process->id);
+            printf("\nold process id is %d\n", process->id);
             LIST_INSERT_TAIL(&scheduleList, process, scheduleLink);
+        }
         while (LIST_EMPTY(&scheduleList));
         if (!LIST_EMPTY(&scheduleList)) {
             process = LIST_FIRST(&scheduleList);
             LIST_REMOVE(process, scheduleLink);
+            printf("\nnew process id is %d\n", process->id);
             count = 1;
         }
     }
     count--;
-    printf("process id is %x\n", process->id);
+    printf("process id is %d\n", process->id);
     process_run(process);
 }
 

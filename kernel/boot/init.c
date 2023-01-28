@@ -11,13 +11,13 @@ void main() {
     for (u_longlong *i = bssStart; i < bssEnd; i++) {
         *i = 0;
     }
-    printf("Hello! Welcome to FibOS!\n\n");
+    printf("Hello! Welcome to RiemOS!\n\n");
     memory_management_init();
     process_management_init();
     sdInit();
-    PROCESS_CREATE_PRIORITY(server, 5)
-//    PROCESS_CREATE_PRIORITY(ProcessA, 1)
-//    PROCESS_CREATE_PRIORITY(ProcessB, 1)
+//    PROCESS_CREATE_PRIORITY(server, 5)
+    PROCESS_CREATE_PRIORITY(ProcessA, 1)
+    PROCESS_CREATE_PRIORITY(ProcessB, 1)
 //    PROCESS_CREATE_PRIORITY(forkTest, 1)
 //    PROCESS_CREATE_PRIORITY(ipcTest, 5)
 //    sd_test();

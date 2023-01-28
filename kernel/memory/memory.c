@@ -27,35 +27,39 @@ static void pages_init() {
     }
 }
 
-static void virtual_memory_map() {
+void initPgdir(u_longlong* pgdir) {
     u_longlong va, pa;
-    page_insert(kernelPageDirectory, UART_V, UART, PTE_R | PTE_W | PTE_A | PTE_D);
+    page_insert(pgdir, UART_V, UART, PTE_R | PTE_W | PTE_A | PTE_D);
     va = CLINT_V, pa = CLINT;
     for (u_longlong i = 0; i < 0x10000; i += PAGE_SIZE) {
-        page_insert(kernelPageDirectory, va + i, pa + i, PTE_R | PTE_W | PTE_A | PTE_D);
+        page_insert(pgdir, va + i, pa + i, PTE_R | PTE_W | PTE_A | PTE_D);
     }
     va = PLIC_V; pa = PLIC;
     for (u_longlong i = 0; i < 0x4000; i += PAGE_SIZE) {
-        page_insert(kernelPageDirectory, va + i, pa + i, PTE_R | PTE_W | PTE_A | PTE_D);
+        page_insert(pgdir, va + i, pa + i, PTE_R | PTE_W | PTE_A | PTE_D);
     }
     va = PLIC_V + 0x200000; pa = PLIC + 0x200000;
     for (u_longlong i = 0; i < 0x4000; i += PAGE_SIZE) {
-        page_insert(kernelPageDirectory, va + i, pa + i, PTE_R | PTE_W | PTE_A | PTE_D);
+        page_insert(pgdir, va + i, pa + i, PTE_R | PTE_W | PTE_A | PTE_D);
     }
-    page_insert(kernelPageDirectory, SPI_CTRL_ADDR, SPI_CTRL_ADDR, PTE_R | PTE_W | PTE_A | PTE_D);
-    page_insert(kernelPageDirectory, UART_CTRL_ADDR, UART_CTRL_ADDR, PTE_R | PTE_W | PTE_A | PTE_D);
+    page_insert(pgdir, SPI_CTRL_ADDR, SPI_CTRL_ADDR, PTE_R | PTE_W | PTE_A | PTE_D);
+    page_insert(pgdir, UART_CTRL_ADDR, UART_CTRL_ADDR, PTE_R | PTE_W | PTE_A | PTE_D);
     extern char textEnd[];
     va = pa = (u_longlong)kernelStart;
     for (u_longlong i = 0; va + i < (u_longlong)textEnd; i += PAGE_SIZE) {
-        page_insert(kernelPageDirectory, va + i, pa + i, PTE_R | PTE_X | PTE_W | PTE_A | PTE_D);
+        page_insert(pgdir, va + i, pa + i, PTE_R | PTE_X | PTE_W | PTE_A | PTE_D);
     }
     va = pa = (u_longlong)textEnd;
     for (u_longlong i = 0; va + i < PHYSICAL_MEMORY_TOP; i += PAGE_SIZE) {
-        page_insert(kernelPageDirectory, va + i, pa + i, PTE_R | PTE_W | PTE_A | PTE_D);
+        page_insert(pgdir, va + i, pa + i, PTE_R | PTE_W | PTE_A | PTE_D);
     }
     extern char trampoline[];
-    page_insert(kernelPageDirectory, TRAMPOLINE_BASE, (u_longlong)trampoline,PTE_R | PTE_W | PTE_X | PTE_A | PTE_D);
-    page_insert(kernelPageDirectory, TRAMPOLINE_BASE + PAGE_SIZE, (u_longlong)trampoline + PAGE_SIZE,PTE_R | PTE_W | PTE_X | PTE_A | PTE_D);
+    page_insert(pgdir, TRAMPOLINE_BASE, (u_longlong)trampoline,PTE_R | PTE_W | PTE_X | PTE_A | PTE_D);
+    page_insert(pgdir, TRAMPOLINE_BASE + PAGE_SIZE, (u_longlong)trampoline + PAGE_SIZE,PTE_R | PTE_W | PTE_X | PTE_A | PTE_D);
+}
+
+void virtual_memory_map() {
+    initPgdir(kernelPageDirectory);
 }
 
 void mmu_init() {

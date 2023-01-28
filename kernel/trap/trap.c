@@ -2,7 +2,6 @@
 #include "../../include/driver.h"
 #include "../../include/kclock.h"
 #include "../../include/trap.h"
-#include "../../include/process.h"
 #include "../../include/memory.h"
 #include "../../include/assembly.h"
 #include "../../include/syscallLib.h"
@@ -12,13 +11,11 @@ extern Process *curProcess;
 void trap_init() {
     printf("Trap init start...\n");
     w_stvec((u_longlong)kernelVec);
-//    w_sstatus(SSTATUS_SIE | SSTATUS_SPIE | SSTATUS_UIE | SSTATUS_UPIE);
     w_sstatus(SSTATUS_SIE | SSTATUS_SPIE | SSTATUS_SUM);
     w_sie(SIE_SEIE | SIE_SSIE | SIE_STIE);
     setNextTimeInterrupt();
     printf("Trap init finish!\n");
 }
-
 
 void kernelTrap() {
     u_longlong sepc = r_sepc();
