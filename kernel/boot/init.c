@@ -16,8 +16,8 @@ void main() {
     process_management_init();
     sdInit();
 //    PROCESS_CREATE_PRIORITY(server, 5)
-    PROCESS_CREATE_PRIORITY(ProcessA, 1)
-    PROCESS_CREATE_PRIORITY(ProcessB, 1)
+//    PROCESS_CREATE_PRIORITY(ProcessA, 1)
+//    PROCESS_CREATE_PRIORITY(ProcessB, 1)
 //    PROCESS_CREATE_PRIORITY(forkTest, 1)
 //    PROCESS_CREATE_PRIORITY(ipcTest, 5)
 //    sd_test();

@@ -68,7 +68,7 @@ void userTrap() {
 
 void userTrapReturn() {
     extern char trampoline[];
-    w_stvec(TRAMPOLINE_BASE + ((u_longlong)userVector - (u_longlong)trampoline)); // 指向 userVector 函数的虚拟地址
+    w_stvec(TRAMPOLINE_BASE + ((u_longlong)userVector - (u_longlong)trampoline)); /* point to the virtual addr of userVector() */
     Trapframe* trapframe = getTrapFrame();
     trapframe->kernelSp = getProcessTopSp(curProcess);
     trapframe->stvec = (u_longlong)userTrap;
@@ -77,6 +77,6 @@ void userTrapReturn() {
     sstatus |= SSTATUS_SPIE;
     w_sstatus(sstatus);
     u_longlong satp = MAKE_SATP(curProcess->pgdir);
-    u_longlong fn = TRAMPOLINE_BASE + ((u_longlong)userReturn - (u_longlong)trampoline); // 指向 userReturn 函数的虚拟地址
+    u_longlong fn = TRAMPOLINE_BASE + ((u_longlong)userReturn - (u_longlong)trampoline); /* point to the virtual addr of userReturn() */
     ((void(*)(u_longlong, u_longlong))fn)((u_longlong)trapframe, satp);
 }

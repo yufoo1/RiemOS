@@ -209,7 +209,8 @@ void process_run(Process* p) {
     printf("curProcess's trapframe is %lx and trapframe addr is %lx, size is %lx\n", &(curProcess->trapframe), trapframe, sizeof(Trapframe));
     bcopy(&(curProcess->trapframe), trapframe, sizeof(Trapframe));
     u_longlong sp = KERNEL_STACK_TOP;
-    asm volatile("ld sp, 0(%0)" : :"r"(&sp): "memory");
+//    asm volatile("ld sp, 0(%0)" : :"r"(&sp): "memory"); /* sp -> kernel stack top */
+    printf("ok\n");
     userTrapReturn();
 }
 
