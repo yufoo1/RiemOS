@@ -1,7 +1,6 @@
 #include "../include/syscall.h"
 #include "../include/printf.h"
 #include "../include/ipc.h"
-#include "../../include/type.h"
 
 int userMain(int argc, char **argv) {
     u_longlong who;

@@ -100,7 +100,6 @@ int process_setup(Process *p) {
     extern u_longlong kernelPageDirectory[];
     page_insert(kernelPageDirectory, getProcessTopSp(p) - PGSIZE, page2pa(page), PTE_R | PTE_W | PTE_X);
     page_insert(p->pgdir, getProcessTopSp(p) - PGSIZE, page2pa(page), PTE_R | PTE_W | PTE_X);
-    copyKernelPgdir(p->pgdir);
     return 0;
 }
 
@@ -116,7 +115,7 @@ int process_alloc(Process **new, u_longlong parentId) {
     if ((r = process_setup(p)) < 0) {
         return r;
     }
-
+    copyKernelPgdir(p->pgdir);
     p->id = generate_pid(p);
     p->state = RUNNABLE;
     p->parentId = parentId;
@@ -208,9 +207,8 @@ void process_run(Process* p) {
     curProcess = p;
     printf("curProcess's trapframe is %lx and trapframe addr is %lx, size is %lx\n", &(curProcess->trapframe), trapframe, sizeof(Trapframe));
     bcopy(&(curProcess->trapframe), trapframe, sizeof(Trapframe));
-    u_longlong sp = KERNEL_STACK_TOP;
+//    u_longlong sp = KERNEL_STACK_TOP;
 //    asm volatile("ld sp, 0(%0)" : :"r"(&sp): "memory"); /* sp -> kernel stack top */
-    printf("ok\n");
     userTrapReturn();
 }
 
@@ -301,14 +299,16 @@ void process_fork() {
                     continue;
                 }
                 u_longlong va = (i << 30) + (j << 21) + (k << 12);
-                if (va == TRAMPOLINE_BASE || va == TRAMPOLINE_BASE + PAGE_SIZE) {
+                if (va == TRAMPOLINE_BASE || va == TRAMPOLINE_BASE + PAGE_SIZE || !(pa2[k] & PTE_U)) {
                     continue;
                 }
-                if (pa2[k] & PTE_W) {
+                if (pa2[k] & (PTE_W)) {
                     pa2[k] |= PTE_C;
                     pa2[k] &= ~PTE_W;
                 }
+                printf("process fork va is %lx\n", va);
                 page_insert(process->pgdir, va, PTE2PA(pa2[k]), PTE2PERM(pa2[k]));
+                printf("ok\n");
             }
         }
     }

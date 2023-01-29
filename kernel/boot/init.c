@@ -19,7 +19,7 @@ void main() {
 //    PROCESS_CREATE_PRIORITY(ProcessA, 1)
 //    PROCESS_CREATE_PRIORITY(ProcessB, 1)
 //    PROCESS_CREATE_PRIORITY(forkTest, 1)
-//    PROCESS_CREATE_PRIORITY(ipcTest, 5)
+    PROCESS_CREATE_PRIORITY(ipcTest, 5)
 //    sd_test();
 //    PROCESS_CREATE_PRIORITY(ideTest, 5)
 //    PROCESS_CREATE_PRIORITY(fsTest, 5)
